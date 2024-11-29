@@ -14,6 +14,7 @@
 </head>
 
 <body class="bg-gray-50">
+
   <!-- Cabeçalho -->
   <header class="bg-indigo-600 text-white py-6 shadow-lg">
     <div class="container mx-auto px-4">
@@ -101,26 +102,25 @@
       </div>
     </div>
 
-    <!-- Seção do PDF -->
-    <div id="pdfSection" class="bg-white rounded-lg shadow-md">
-      <div class="flex justify-between items-center p-4 border-b">
-        <h3 id="pdfTitle" class="text-xl font-semibold flex items-center">
-          <i class="fas fa-file-pdf mr-2 text-red-500"></i> Visualizador de Cifras
-        </h3>
-        <button onclick="closeViewer('pdfSection')" class="text-gray-500 hover:text-gray-700 p-2 transition duration-200">
-          <i class="fas fa-times text-lg"></i>
-        </button>
-      </div>
-      <div class="p-4">
-        <h4 class="text-lg font-medium mb-2">Observações pessoais da Música</h4>
-        <textarea id="instrumentalistNotes" class="w-full border rounded p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" placeholder="Digite suas observações aqui..."></textarea>
-        <div class="flex justify-end mb-4">
-          <button onclick="saveNotes()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 flex items-center">
-            <i class="fas fa-save mr-2"></i>
-            Salvar
-          </button>
+    <!-- Seção do Visualizador de PDF Integrado Abaixo da Caixa de Observações -->
+    <div id="pdfViewerSection" class="bg-white rounded-lg shadow-md p-6 mt-8">
+      <h2 class="text-2xl font-semibold mb-4 flex items-center">
+        <i class="fas fa-file-pdf mr-2 text-red-500"></i> Visualizador de Cifras
+      </h2>
+      <div class="flex flex-col">
+        <div class="flex-1 mb-4">
+          <h4 class="text-lg font-medium mb-2">Observações pessoais da Música</h4>
+          <textarea id="instrumentalistNotes" class="w-full border rounded p-2 h-24 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" placeholder="Digite suas observações aqui..."></textarea>
+          <div class="flex justify-end mt-2">
+            <button onclick="saveNotes()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 flex items-center">
+              <i class="fas fa-save mr-2"></i>
+              Salvar
+            </button>
+          </div>
         </div>
-        <iframe id="pdfViewer" class="pdf-viewer shadow-inner rounded"></iframe>
+        <div class="flex-1">
+          <iframe id="pdfViewer" class="pdf-viewer h-96 w-full border rounded"></iframe>
+        </div>
       </div>
     </div>
   </div>
