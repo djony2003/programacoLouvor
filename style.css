@@ -1,0 +1,26 @@
+/* styles.css */
+
+/* Estilos para o visualizador de PDF */
+.pdf-viewer {
+  width: 100%;
+  height: 800px;
+  border: none;
+}
+
+/* Estilos para links de música e itens da ordem do culto */
+.music-link,
+.order-item {
+  transition: all 0.2s;
+  cursor: move; /* Indica que é arrastável */
+}
+
+.music-link:hover,
+.order-item:hover {
+  background-color: #e2e8f0; /* Tailwind's gray-200 */
+  transform: translateX(5px);
+}
+
+/* Ocultar a seção do PDF inicialmente */
+#pdfSection {
+  display: none;
+}

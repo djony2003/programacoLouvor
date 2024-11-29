@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programação do Culto</title>
+  <!-- Link para o Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Link para Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Link para o CSS personalizado -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-gray-50">
+  <!-- Cabeçalho -->
+  <header class="bg-indigo-600 text-white py-6 shadow-lg">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between">
+        <div class="flex items-center mb-4 md:mb-0">
+          <i class="fas fa-calendar-alt mr-3 text-2xl"></i>
+          <div>
+            <!-- Campo para o Nome da Programação -->
+            <div class="flex items-center mb-2">
+              <input type="text" id="programName" class="bg-indigo-600 text-white text-3xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg px-2" placeholder="Programação do Culto" />
+            </div>
+            <!-- Campo para a Data da Programação -->
+            <div class="flex items-center">
+              <input type="date" id="programDate" class="bg-indigo-600 text-white text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg px-2" />
+            </div>
+          </div>
+        </div>
+        <p class="text-lg" id="currentDateDisplay"></p>
+      </div>
+      <!-- Seção para o Nome do Arquivo Importado -->
+      <div class="mt-4 flex items-center space-x-4">
+        <span class="text-md">Arquivo Atual:</span>
+        <span id="currentFilename" class="text-md font-semibold">Nenhum arquivo carregado</span>
+      </div>
+      <!-- Espaço reservado para futuros botões -->
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <div class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <!-- Coluna Esquerda - Lista de Músicas -->
+      <div class="md:col-span-1">
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-xl font-semibold mb-4 flex items-center">
+            <i class="fas fa-music mr-2 text-indigo-500"></i> Músicas
+          </h2>
+
+          <!-- Botão para adicionar PDF -->
+          <div class="mb-6">
+            <input type="file" id="musicPdf" accept=".pdf" class="hidden" onchange="addMusic()">
+            <button onclick="document.getElementById('musicPdf').click()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded-lg transition duration-300 flex items-center justify-center">
+              <i class="fas fa-plus mr-2"></i>
+              Adicionar Cifra PDF
+            </button>
+          </div>
+
+          <!-- Botões de Controle -->
+          <div class="space-y-3 mb-6">
+            <button onclick="exportProgram()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+              <i class="fas fa-download mr-2"></i>
+              Exportar Programação
+            </button>
+            <label class="block w-full">
+              <span class="sr-only">Importar Programa</span>
+              <input type="file" id="importInput" accept=".json" class="hidden" onchange="importProgram(event)">
+              <button onclick="document.getElementById('importInput').click()" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                <i class="fas fa-upload mr-2"></i>
+                Importar Programação
+              </button>
+            </label>
+            <button onclick="resetProgram()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+              <i class="fas fa-trash-alt mr-2"></i>
+              Zerar Programação
+            </button>
+          </div>
+
+          <!-- Lista de Músicas -->
+          <div id="musicList" class="space-y-2" ondrop="dropMusic(event)" ondragover="allowDrop(event)">
+            <!-- As músicas serão adicionadas aqui dinamicamente -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna Direita - Ordem do Culto -->
+      <div class="md:col-span-3">
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-2xl font-semibold mb-4 flex items-center">
+            <i class="fas fa-list mr-2 text-indigo-500"></i> Ordem do Culto
+          </h2>
+          <div id="orderList" class="space-y-3" ondrop="dropOrder(event)" ondragover="allowDrop(event)">
+            <!-- Os itens da Ordem do Culto serão gerenciados via JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção do PDF -->
+    <div id="pdfSection" class="bg-white rounded-lg shadow-md">
+      <div class="flex justify-between items-center p-4 border-b">
+        <h3 id="pdfTitle" class="text-xl font-semibold flex items-center">
+          <i class="fas fa-file-pdf mr-2 text-red-500"></i> Visualizador de Cifras
+        </h3>
+        <button onclick="closeViewer('pdfSection')" class="text-gray-500 hover:text-gray-700 p-2 transition duration-200">
+          <i class="fas fa-times text-lg"></i>
+        </button>
+      </div>
+      <div class="p-4">
+        <h4 class="text-lg font-medium mb-2">Observações pessoais da Música</h4>
+        <textarea id="instrumentalistNotes" class="w-full border rounded p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" placeholder="Digite suas observações aqui..."></textarea>
+        <div class="flex justify-end mb-4">
+          <button onclick="saveNotes()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 flex items-center">
+            <i class="fas fa-save mr-2"></i>
+            Salvar
+          </button>
+        </div>
+        <iframe id="pdfViewer" class="pdf-viewer shadow-inner rounded"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notificação de Sucesso -->
+  <div id="notification" class="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 flex items-center">
+    <i class="fas fa-check-circle mr-2"></i> Operação realizada com sucesso!
+  </div>
+
+  <!-- Link para o JavaScript personalizado -->
+  <script src="script.js"></script>
+</body>
+
+</html>
