@@ -85,13 +85,18 @@ function saveProgramData() {
     const textarea = document.querySelector(
       `#orderList .order-item:nth-child(${index + 1}) textarea`
     );
-    programData.orderList[index].observation = textarea.value.trim();
+    if (textarea) {
+      programData.orderList[index].observation = textarea.value.trim();
+    }
   });
 
   // Atualizar Observações nas Músicas (Caso alguma esteja aberta)
   if (currentSongIndex !== null) {
     const notesTextarea = document.getElementById("instrumentalistNotes");
-    programData.songsList[currentSongIndex].notes = notesTextarea.value.trim();
+    if (notesTextarea) {
+      programData.songsList[currentSongIndex].notes =
+        notesTextarea.value.trim();
+    }
   }
 
   // Salvar no localStorage
@@ -144,15 +149,13 @@ function updateMusicList() {
   });
 }
 
-// Função para mostrar o PDF e as observações
+// Função para mostrar o PDF no visualizador integrado
 function showPdf(song, index) {
   currentSongIndex = index; // Atualiza o índice da música atual
-  const pdfSection = document.getElementById("pdfSection");
   const pdfViewer = document.getElementById("pdfViewer");
-  const pdfTitle = document.getElementById("pdfTitle");
+  const pdfTitle = document.querySelector("#pdfViewerSection h2");
   const notesTextarea = document.getElementById("instrumentalistNotes");
 
-  pdfSection.style.display = "block";
   pdfTitle.innerHTML = `<i class="fas fa-file-pdf mr-2 text-red-500"></i> ${song.name}`;
   pdfViewer.src = song.pdfData;
   notesTextarea.value = song.notes || ""; // Evita 'undefined'
@@ -184,37 +187,33 @@ function showNotification(message) {
   }, 3000); // Esconde após 3 segundos
 }
 
-// Função para fechar o visualizador
-function closeViewer(sectionId) {
-  const section = document.getElementById(sectionId);
-  const player = document.getElementById("pdfViewer");
-  const notesTextarea = document.getElementById("instrumentalistNotes");
-  player.src = "";
-  notesTextarea.value = "";
-  section.style.display = "none";
-  currentSongIndex = null; // Reseta o índice da música atual
-}
-
 // Função para deletar uma música
 function deleteSong(index) {
   if (confirm("Tem certeza que deseja excluir esta música?")) {
-    // Verificar se a música a ser deletada está aberta
-    const pdfSection = document.getElementById("pdfSection");
-    const pdfTitleText = document
-      .getElementById("pdfTitle")
-      .textContent.replace("Visualizador de Cifras", "")
-      .trim();
-    if (
-      pdfSection.style.display === "block" &&
-      programData.songsList[index].name === pdfTitleText
-    ) {
-      closeViewer("pdfSection");
-    }
-
     programData.songsList.splice(index, 1);
     saveProgramData(); // Salvar após deletar
     updateMusicList();
+
+    // Limpar visualizador se a música deletada estava aberta
+    if (currentSongIndex === index) {
+      clearPdfViewer();
+    } else if (currentSongIndex > index) {
+      currentSongIndex--; // Ajustar índice se necessário
+    }
   }
+}
+
+// Função para limpar o visualizador de PDF
+function clearPdfViewer() {
+  const pdfViewer = document.getElementById("pdfViewer");
+  const pdfTitle = document.querySelector("#pdfViewerSection h2");
+  const notesTextarea = document.getElementById("instrumentalistNotes");
+
+  pdfViewer.src = "";
+  pdfTitle.innerHTML = `<i class="fas fa-file-pdf mr-2 text-red-500"></i> Visualizador de Cifras`;
+  notesTextarea.value = "";
+
+  currentSongIndex = null; // Reseta o índice da música atual
 }
 
 // Função para exportar o programa
@@ -267,7 +266,6 @@ function importProgram(event) {
         updateCurrentDateDisplay();
         updateMusicList();
         updateOrderList();
-        closeViewer("pdfSection"); // Fecha o PDF aberto ao importar
 
         // Atualizar o nome do arquivo importado
         currentFilename = file.name.endsWith(".json")
@@ -280,6 +278,9 @@ function importProgram(event) {
         localStorage.setItem("churchProgram", JSON.stringify(programData));
 
         showNotification("Programa importado com sucesso!");
+
+        // Limpar visualizador se houver
+        clearPdfViewer();
       } catch (error) {
         alert(
           "Erro ao importar o programa. Verifique se o arquivo está correto."
@@ -311,7 +312,9 @@ function resetProgram() {
     updateCurrentDateDisplay();
     updateMusicList();
     updateOrderList();
-    closeViewer("pdfSection"); // Fecha o PDF aberto ao zerar
+
+    // Limpar visualizador se houver
+    clearPdfViewer();
 
     showNotification("Programação zerada com sucesso!");
   }
