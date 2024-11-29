@@ -3,7 +3,7 @@
 /* Estilos para o visualizador de PDF */
 .pdf-viewer {
   width: 100%;
-  height: 800px;
+  height: 100%;
   border: none;
 }
 
@@ -20,7 +20,12 @@
   transform: translateX(5px);
 }
 
-/* Ocultar a seção do PDF inicialmente */
-#pdfSection {
-  display: none;
+/* Ajustes adicionais para melhorar a aparência */
+#pdfViewerSection {
+  /* Adiciona margem superior para separação clara */
+  margin-top: 2rem;
+}
+
+#instrumentalistNotes {
+  resize: vertical; /* Permite redimensionamento vertical */
 }
