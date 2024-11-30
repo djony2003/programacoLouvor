@@ -423,3 +423,44 @@ window.onload = function () {
   document.getElementById("currentFilename").textContent =
     currentFilename === "" ? "Nenhum arquivo carregado" : currentFilename;
 };
+
+// script.js
+
+// Função para alternar o modo de tela cheia no Visualizador de PDF
+function toggleFullScreen() {
+  const pdfSection = document.getElementById("pdfViewerSection");
+
+  if (!document.fullscreenElement) {
+    // Solicitar tela cheia
+    if (pdfSection.requestFullscreen) {
+      pdfSection.requestFullscreen();
+    } else if (pdfSection.webkitRequestFullscreen) {
+      /* Safari */
+      pdfSection.webkitRequestFullscreen();
+    } else if (pdfSection.msRequestFullscreen) {
+      /* IE11 */
+      pdfSection.msRequestFullscreen();
+    }
+  } else {
+    // Sair da tela cheia
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      /* Safari */
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      /* IE11 */
+      document.msExitFullscreen();
+    }
+  }
+}
+
+// Opcional: Atualizar o ícone do botão baseado no estado de tela cheia
+document.addEventListener("fullscreenchange", () => {
+  const fullscreenButton = document.querySelector("#pdfViewerSection button");
+  if (document.fullscreenElement) {
+    fullscreenButton.innerHTML = '<i class="fas fa-compress-alt"></i>';
+  } else {
+    fullscreenButton.innerHTML = '<i class="fas fa-expand-alt"></i>';
+  }
+});
