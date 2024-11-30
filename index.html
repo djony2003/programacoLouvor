@@ -107,9 +107,9 @@
       <h2 class="text-2xl font-semibold mb-4 flex items-center">
         <i class="fas fa-file-pdf mr-2 text-red-500"></i> Visualizador de Cifras
       </h2>
-      <div class="flex flex-col lg:flex-row lg:space-x-6">
+      <div class="flex flex-col">
         <!-- Caixa de Observações -->
-        <div class="flex-1 mb-6 lg:mb-0">
+        <div class="w-full mb-6">
           <h4 class="text-lg font-medium mb-2">Observações pessoais da Música</h4>
           <textarea id="instrumentalistNotes" class="w-full border rounded p-2 h-24 lg:h-32 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" placeholder="Digite suas observações aqui..."></textarea>
           <div class="flex justify-end mt-2">
@@ -120,7 +120,7 @@
           </div>
         </div>
         <!-- Visualizador de PDF -->
-        <div class="flex-1">
+        <div class="w-full">
           <iframe id="pdfViewer" class="pdf-viewer w-full h-64 lg:h-96 border rounded"></iframe>
         </div>
       </div>
