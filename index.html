@@ -45,10 +45,10 @@
 
   <!-- Conteúdo Principal -->
   <div class="container mx-auto px-4 py-8">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-8">
       <!-- Coluna Esquerda - Lista de Músicas -->
-      <div class="md:col-span-1">
-        <div class="bg-white rounded-lg shadow-md p-6">
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-lg shadow-md p-6 h-full flex flex-col">
           <h2 class="text-xl font-semibold mb-4 flex items-center">
             <i class="fas fa-music mr-2 text-indigo-500"></i> Músicas
           </h2>
@@ -83,19 +83,19 @@
           </div>
 
           <!-- Lista de Músicas -->
-          <div id="musicList" class="space-y-2" ondrop="dropMusic(event)" ondragover="allowDrop(event)">
+          <div id="musicList" class="space-y-2 flex-grow overflow-auto" ondrop="dropMusic(event)" ondragover="allowDrop(event)">
             <!-- As músicas serão adicionadas aqui dinamicamente -->
           </div>
         </div>
       </div>
 
       <!-- Coluna Direita - Ordem do Culto -->
-      <div class="md:col-span-3">
-        <div class="bg-white rounded-lg shadow-md p-6">
+      <div class="lg:col-span-3">
+        <div class="bg-white rounded-lg shadow-md p-6 h-full">
           <h2 class="text-2xl font-semibold mb-4 flex items-center">
             <i class="fas fa-list mr-2 text-indigo-500"></i> Ordem do Culto
           </h2>
-          <div id="orderList" class="space-y-3" ondrop="dropOrder(event)" ondragover="allowDrop(event)">
+          <div id="orderList" class="space-y-3 overflow-auto" ondrop="dropOrder(event)" ondragover="allowDrop(event)">
             <!-- Os itens da Ordem do Culto serão gerenciados via JavaScript -->
           </div>
         </div>
@@ -107,10 +107,11 @@
       <h2 class="text-2xl font-semibold mb-4 flex items-center">
         <i class="fas fa-file-pdf mr-2 text-red-500"></i> Visualizador de Cifras
       </h2>
-      <div class="flex flex-col">
-        <div class="flex-1 mb-4">
+      <div class="flex flex-col lg:flex-row lg:space-x-6">
+        <!-- Caixa de Observações -->
+        <div class="flex-1 mb-6 lg:mb-0">
           <h4 class="text-lg font-medium mb-2">Observações pessoais da Música</h4>
-          <textarea id="instrumentalistNotes" class="w-full border rounded p-2 h-24 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" placeholder="Digite suas observações aqui..."></textarea>
+          <textarea id="instrumentalistNotes" class="w-full border rounded p-2 h-24 lg:h-32 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" placeholder="Digite suas observações aqui..."></textarea>
           <div class="flex justify-end mt-2">
             <button onclick="saveNotes()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 flex items-center">
               <i class="fas fa-save mr-2"></i>
@@ -118,8 +119,9 @@
             </button>
           </div>
         </div>
+        <!-- Visualizador de PDF -->
         <div class="flex-1">
-          <iframe id="pdfViewer" class="pdf-viewer h-96 w-full border rounded"></iframe>
+          <iframe id="pdfViewer" class="pdf-viewer w-full h-64 lg:h-96 border rounded"></iframe>
         </div>
       </div>
     </div>
