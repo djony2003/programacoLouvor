@@ -5,6 +5,7 @@
   width: 100%;
   height: 100%;
   border: none;
+  /* Removido o height fixo para permitir a responsividade via Tailwind */
 }
 
 /* Estilos para links de música e itens da ordem do culto */
